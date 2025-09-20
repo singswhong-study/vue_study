@@ -8,13 +8,11 @@ powershell 관리자로 오픈하고
 
 ### vite 에서 vue 파일 인식문제
 src/shims-vue.d.ts 파일 생성.
-----------------------------------------
 declare module '*.vue' {
   import { DefineComponent } from 'vue'
   const component: DefineComponent<{}, {}, any>
   export default component
 }
-----------------------------------------
 
 ###  vue.config.js 의 개발로컬 설정
     devServer: {
@@ -46,7 +44,7 @@ declare module '*.vue' {
 ### import 등 타입 설정이 제대로 잡히지 않을 때
 npm install --save-dev @types/node    
 
-###     
+### vue/cli일때..
 package.json 의 eslintConfig 설정.env 내부에
     "vue/setup-compiler-macros": true    
     이 구문을 설정해줘야 vue cli 생성시 defineProps 컴파일 에러등을 해결
@@ -56,4 +54,5 @@ package.json 의 eslintConfig 설정.env 내부에
 ### npm 설치한것들
 npm install axios
 npm install vue-router
-
+npm install pinia
+npm install pinia-plugin-persistedstate
