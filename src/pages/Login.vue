@@ -17,6 +17,7 @@
         <button class="w-100 btn btn-lg btn-primary" @click="login()">Sign in</button>
         <button class="w-100 btn btn-lg btn-primary" @click="getToken()">Token Sign in</button>
         <button class="w-100 btn btn-lg btn-primary" @click="userInfo()">유저 확인</button>
+        <button class="w-100 btn btn-lg btn-primary" @click="validToken()">토큰 검증</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
     </div>
 </template>
@@ -26,6 +27,8 @@ import axios from 'axios';
 import { reactive } from 'vue';
 import { useMemberStore } from '@/store/member';
 import router from '@/router/router';
+import { api }  from '@/utils/axios';
+import { toRaw } from 'vue';
 
     const state = reactive({
         form : {
@@ -61,17 +64,37 @@ import router from '@/router/router';
     };
 
     const getToken = async () => {
-        await axios.get('/api/account/token', { params: state.form }).then((res)=>{
+
+        // await axios.get('/api/account/token', { params: state.form }).then((res)=>{
+        //     console.log(res.data);
+        //     //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibmFtZSI6InRlc3RAZW1haWwuY29tIiwiaWF0IjoxNzU4NTEzNTgyLCJleHAiOjE3NTg1MTM3NjJ9.0px1HwwyrUPC7AbCDlmcJqmqE15XoqMU8tPPNgEzGO4
+        // }).catch((err) => {
+
+        // });
+
+        await axios.post('/api/account/token', toRaw(state.form)).then((res)=>{
             console.log(res.data);
+            memberStore.login(res.data.email, res.data.name); //혹은 store 내부에서 login api를 호출
             //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibmFtZSI6InRlc3RAZW1haWwuY29tIiwiaWF0IjoxNzU4NTEzNTgyLCJleHAiOjE3NTg1MTM3NjJ9.0px1HwwyrUPC7AbCDlmcJqmqE15XoqMU8tPPNgEzGO4
         }).catch((err) => {
 
         });
     }
 
-    const userInfo = () => { //정보 정상 확인용
+    //정보 정상 확인용
+    const userInfo = () => { 
         console.log(`isLogin : ${memberStore.getIsLogin} `);
         console.log(`email : ${memberStore.getEmail} `);
+    }
+
+    //토큰 검증용
+    const validToken = async () => {
+        try {
+            const res = await api.post('/api/account/valid-token'); //custom 으로 withCredentilas : true
+            console.log(res.data);
+        } catch (error) {
+            console.error(err.response.data);
+        }
     }
 
 </script>

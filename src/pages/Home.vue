@@ -17,6 +17,7 @@ import Card from '@/components/Card.vue';
 import axios from 'axios';
 import { reactive, onMounted } from 'vue';
 import { useMemberStore } from '@/store/member';
+import { api } from '@/utils/axios'
 
 const state = reactive({
     items: []
@@ -31,7 +32,7 @@ onMounted(async () => {
     // console.log(sessionStorage.getItem('userInfo'));
 
     try {
-        const res = axios.get('/api/art/items');
+        const res = api.get('/api/art/items');
         state.items = (await res).data;
     } catch (error) {
         console.log(error);

@@ -18,7 +18,7 @@
 </template>
 
 <script setup>
-import { formatPrice } from '@/utils/Util'
+import { formatPrice } from '@/utils/util'
 const props = defineProps({
   item: {
     type: Object,
