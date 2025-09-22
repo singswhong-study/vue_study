@@ -14,7 +14,8 @@
             <input type="checkbox" value="remember-me"> Remember me
         </label>
         </div>
-        <button class="w-100 btn btn-lg btn-primary" @click="submit()">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary" @click="login()">Sign in</button>
+        <button class="w-100 btn btn-lg btn-primary" @click="getToken()">Token Sign in</button>
         <button class="w-100 btn btn-lg btn-primary" @click="userInfo()">유저 확인</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
     </div>
@@ -24,6 +25,7 @@
 import axios from 'axios';
 import { reactive } from 'vue';
 import { useMemberStore } from '@/store/member';
+import router from '@/router/router';
 
     const state = reactive({
         form : {
@@ -34,19 +36,38 @@ import { useMemberStore } from '@/store/member';
 
     const memberStore = useMemberStore();
 
-    const submit = async () => {
+    const login = async () => {
         // console.log(state.form)
         await axios.get('/api/account/login', { params: state.form }).then((res)=>{
             // console.log(res.data);            
             memberStore.login(res.data.email, res.data.name); //혹은 store 내부에서 login api를 호출
             alert('로그인 되었습니다.');
-            //만약 vuex 의 경우
+            console.log(`login info : ${memberStore.getEmail}`);
+            router.push({ path: '/' });
+            //1. 만약 vuex 의 경우
             //commit을 하면서 mutaion/action 등을 사용함.
+
+            //2. 세션스토리지에 저장.
+            // sessionStorage.setItem('userInfo', JSON.stringify({
+            //     'email' :  res.data.email,
+            //     'name' :  res.data.name,
+            //     'isLogin' : true
+            // }));
+
         }).catch((err) => {
             console.log(err);
             alert(err.response.data.error);
-        })
+        });
     };
+
+    const getToken = async () => {
+        await axios.get('/api/account/token', { params: state.form }).then((res)=>{
+            console.log(res.data);
+            //eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwibmFtZSI6InRlc3RAZW1haWwuY29tIiwiaWF0IjoxNzU4NTEzNTgyLCJleHAiOjE3NTg1MTM3NjJ9.0px1HwwyrUPC7AbCDlmcJqmqE15XoqMU8tPPNgEzGO4
+        }).catch((err) => {
+
+        });
+    }
 
     const userInfo = () => { //정보 정상 확인용
         console.log(`isLogin : ${memberStore.getIsLogin} `);

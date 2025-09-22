@@ -26,8 +26,9 @@ const memberStore = useMemberStore();
 
 onMounted(async () => {
 
-    console.log(memberStore.getIsLogin);
-    console.log(memberStore.getEmail);
+    // console.log(memberStore.getIsLogin);
+    // console.log(memberStore.getEmail);
+    // console.log(sessionStorage.getItem('userInfo'));
 
     try {
         const res = axios.get('/api/art/items');

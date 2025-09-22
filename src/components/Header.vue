@@ -41,8 +41,11 @@ const { getIsLogin } = storeToRefs(memberStore); //이런식, 혹은 computed() 
 
 const logout = () => {
     console.log('*** logout ***');
+    //1. pinia state 초기화
     memberStore.logout();    
     alert('로그아웃 되었습니다.');
+    //2. 세션을 쓴다면 삭제.
+    sessionStorage.removeItem('userInfo');
     router.push({ path: '/' });
 }
 

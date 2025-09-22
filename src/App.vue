@@ -21,6 +21,10 @@ export default {
     Header,
     Footer,
     Home
+  },
+  setup() {
+    //pinia 없이 vuex + 세션 스토리지를 사용한다면
+    //이 단계에서 sessionStorage를 조회하고, vuex에 commit.
   }
 }
 </script>
