@@ -9,8 +9,11 @@
                             <li>
                                 <router-link to="/" class="text-white">메인화면</router-link>
                             </li>
-                            <li>
+                            <li v-show="!getIsLogin">
                                 <router-link to="/login" class="text-white">로그인</router-link>
+                            </li>
+                            <li v-show="getIsLogin">
+                                <a @click="logout()" class="text-white">로그아웃</a>
                             </li>
                         </ul>
                     </div>
@@ -27,10 +30,22 @@
     </header>
 </template>
 
-<script>
-export default {
-    name: 'Header'
+<script setup>
+import { useMemberStore } from '@/store/member';
+import { storeToRefs } from 'pinia';
+import router from '@/router/router';
+
+const memberStore = useMemberStore();
+const { getIsLogin } = storeToRefs(memberStore); //이런식, 혹은 computed() => 로 래핑 해줘야함. 이렇게 하지 않으면 localStorage에 정상저장X 오류남.
+
+
+const logout = () => {
+    console.log('*** logout ***');
+    memberStore.logout();    
+    alert('로그아웃 되었습니다.');
+    router.push({ path: '/' });
 }
+
 </script>
 
     

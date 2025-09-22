@@ -15,7 +15,7 @@
         </label>
         </div>
         <button class="w-100 btn btn-lg btn-primary" @click="submit()">Sign in</button>
-        <button class="w-100 btn btn-lg btn-primary" @click="userInfo()">유저확인</button>
+        <button class="w-100 btn btn-lg btn-primary" @click="userInfo()">유저 확인</button>
         <p class="mt-5 mb-3 text-muted">&copy; 2017–2022</p>
     </div>
 </template>
@@ -37,16 +37,18 @@ import { useMemberStore } from '@/store/member';
     const submit = async () => {
         // console.log(state.form)
         await axios.get('/api/account/login', { params: state.form }).then((res)=>{
-            console.log(res.data);
-            console.log('로그인됨');
+            // console.log(res.data);            
             memberStore.login(res.data.email, res.data.name); //혹은 store 내부에서 login api를 호출
+            alert('로그인 되었습니다.');
+            //만약 vuex 의 경우
+            //commit을 하면서 mutaion/action 등을 사용함.
         }).catch((err) => {
             console.log(err);
             alert(err.response.data.error);
         })
     };
 
-    const userInfo = () => {
+    const userInfo = () => { //정보 정상 확인용
         console.log(`isLogin : ${memberStore.getIsLogin} `);
         console.log(`email : ${memberStore.getEmail} `);
     }
